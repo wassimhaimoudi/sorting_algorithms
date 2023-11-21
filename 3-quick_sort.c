@@ -69,7 +69,7 @@ void quickSort(int *array, int low, int high, int n)
  */
 void quick_sort(int *array, size_t size)
 {
-	if (arra == NULL || size < 2)
+	if (array == NULL || size < 2)
 		return;
 	quickSort(array, 0, (int)(size - 1), (int)size);
 }
