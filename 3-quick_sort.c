@@ -15,61 +15,64 @@ void swap(int *array, int i, int j)
 	array[j] = temp;
 }
 /**
- * partition - Divides the array into partitions, then sorts them
- * @array: Array to be sorted
- * @low: Lower bound
- * @high: Higher bound
- * @n: Size of the array
- *
- * Return: The index of the pivot
+ * partition - array partition
+ * @array: array to sort
+ * @first: first position
+ * @last: last position
+ * @size: array size
+ * Return: int pivot index
  */
-int partition(int *array, int low, int high, int n)
+int partition(int *array, int first, int last, size_t size)
 {
-	int pivot = array[high];
 	int i, j;
 
-	i = low - 1;
-	for (j = low; j < high; j++)
+	i = first - 1;
+	for (j = first; j <= last - 1; j++)
 	{
-		if (array[j] <= pivot)
+		if (array[j] < array[last])
 		{
 			i++;
-			swap(array, i, j);
+			if (i < j)
+			{
+				swap(array, i, j);
+				print_array(array, size);
+			}
 		}
 	}
-	swap(array, i + 1, high);
-	print_array(array, n);
+	if (array[i + 1] > array[last])
+	{
+		swap(array, i + 1, last);
+		print_array(array, size);
+	}
+
 	return (i + 1);
 }
 
 /**
- * quickSort - Processes the left part of the pivot
- * and the right part of it
+ * quickSortR - Sorts an array of integers recursively
  * @array: Array to be sorted
- * @low: Lower bound
- * @high: Higher bound
- * @n: Size of the array
+ * @first: First bound
+ * @last: Last bound
+ * @size: Array size
  */
-void quickSort(int *array, int low, int high, int n)
+void quickSortR(int *array, int first, int last, size_t size)
 {
-	int pi;
+	int pivot;
 
-	if (low < high)
+	if (first < last)
 	{
-		pi = partition(array, low, high, n);
-		quickSort(array, low, pi - 1, n);
-		quickSort(array, pi + 1, high, n);
+		pivot = partition(array, first, last, size);
+		quickSortR(array, first, pivot - 1, size);
+		quickSortR(array, pivot + 1, last, size);
 	}
 }
 
 /**
  * quick_sort - Implimentation of the quick sort algorithm
  * @array: Array to be sorted
- * @size: Size of the array
+ * @size: Array size
  */
 void quick_sort(int *array, size_t size)
 {
-	if (array == NULL || size < 2)
-		return;
-	quickSort(array, 0, (int)(size - 1), (int)size);
+	quickSortR(array, 0, size - 1, size);
 }
